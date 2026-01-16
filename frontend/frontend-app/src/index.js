@@ -11,10 +11,13 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Bootstrap JS (cho Dropdow
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './assets/css/index.css'; 
 
+import { AuthProvider } from './contexts/AuthContext';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
+   <BrowserRouter>
+      <AuthProvider> 
+        <App />
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,
 )
