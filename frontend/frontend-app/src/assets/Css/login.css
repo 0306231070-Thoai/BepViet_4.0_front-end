@@ -1,0 +1,136 @@
+/* Nền trang chủ */
+.login-page-bg {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* Card chính */
+.login-card {
+    background-color: white;
+    border-radius: 15px;
+    width: 900px;
+    min-height: 550px;
+    overflow: hidden;
+    border: 1px solid #eee;
+}
+
+/* Khu vực hình ảnh */
+.login-visual {
+    background-color: white;
+    flex: 1;
+    position: relative;
+}
+
+.image-circle-container {
+    width: 350px;
+    height: 350px;
+    overflow: hidden;
+}
+
+.food-circle {
+    width: 100%;
+    object-fit: contain;
+}
+
+/* Form area */
+.login-form-area {
+    background-color: white;
+    flex: 1;
+}
+
+/* Logo placeholder */
+.logo-placeholder {
+    width: 80px;
+    height: 80px;
+    background-color: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #495057;
+}
+
+/* Tabs */
+.auth-tabs {
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    border: none;
+    background: none;
+    padding: 10px 0;
+    font-weight: bold;
+    color: #adb5bd;
+    position: relative;
+}
+
+.tab-btn.active {
+    color: #28a745;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #28a745;
+}
+
+/* Buttons */
+.btn-facebook-custom {
+    background-color: #4267B2;
+}
+
+.btn-success-custom {
+    background-color: #2ecc71;
+    color: white;
+    border-radius: 8px;
+}
+
+.btn-success-custom:hover {
+    background-color: #27ae60;
+}
+
+/* Back button */
+.back-btn-circle {
+    position: absolute;
+    top: 20px;
+    left: -20px;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+/* Divider */
+.divider-text {
+    position: relative;
+    text-align: center;
+    font-size: 12px;
+    color: #adb5bd;
+}
+
+.divider-text::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #eee;
+    z-index: 1;
+}
+
+.divider-text span {
+    position: relative;
+    background: white;
+    padding: 0 10px;
+    z-index: 2;
+}
