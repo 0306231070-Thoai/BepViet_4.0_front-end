@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../assets/Css/login.css';
 const Login = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -65,7 +65,7 @@ const Login = () => {
                 <div className="login-form-area p-4 p-lg-5 position-relative">
                     {/* Nút quay lại icon tròn */}
                     <button onClick={() => navigate('/')} className="back-btn-circle">
-                        <i className="fa-solid fa-arrow-left"></i>
+                        <i className="fa-solid fa-arrow-left">←</i>
                     </button>
 
                     <div className="text-center mb-4">
@@ -126,7 +126,8 @@ const Login = () => {
                         <div className="mb-4">
                             <div className="d-flex justify-content-between">
                                 <label className="form-label small fw-bold text-muted">Mật khẩu</label>
-                                {isLogin && <a href="/" className="small text-muted text-decoration-none">Quên Mật khẩu?</a>}
+                                {isLogin &&
+                                    <Link to="/forgot-password" className="small text-muted text-decoration-none">Quên Mật khẩu?</Link>}
                             </div>
                             <input type="password" name="password" className="form-control bg-light border-0 py-2" placeholder="********" onChange={handleChange} required />
                         </div>

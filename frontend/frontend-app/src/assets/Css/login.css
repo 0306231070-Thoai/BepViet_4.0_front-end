@@ -134,3 +134,38 @@
     padding: 0 10px;
     z-index: 2;
 }
+
+/* Nút bấm GỬI YÊU CẦU màu xanh lá */
+.btn-success-cookpad {
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 10px;
+    letter-spacing: 1px;
+}
+
+.btn-success-cookpad:hover {
+    background-color: #27ae60;
+}
+
+/* Kiểu dáng cho trang Quên mật khẩu */
+.back-to-login-text {
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+}
+
+.back-to-login-text:hover {
+    text-decoration: underline;
+}
+
+.logo-placeholder {
+    width: 80px;
+    height: 80px;
+    background-color: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #495057;
+    border-radius: 10px;
+}
