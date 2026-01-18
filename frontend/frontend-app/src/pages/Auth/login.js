@@ -29,7 +29,7 @@ const Login = () => {
                 localStorage.setItem('token', res.data.access_token);
                 localStorage.setItem('user', JSON.stringify(res.data.user));
                 alert(isLogin ? 'Đăng nhập thành công!' : 'Đăng ký thành công!');
-                navigate('/dashboard');
+                navigate('/profile');
             }
         } catch (err) {
             if (err.response?.status === 422) {
@@ -127,7 +127,7 @@ const Login = () => {
                             <div className="d-flex justify-content-between">
                                 <label className="form-label small fw-bold text-muted">Mật khẩu</label>
                                 {isLogin &&
-                                    <Link to="/forgot-password" className="small text-muted text-decoration-none">Quên Mật khẩu?</Link>}
+                                    <Link to="/forgotPassword" className="small text-muted text-decoration-none">Quên Mật khẩu?</Link>}
                             </div>
                             <input type="password" name="password" className="form-control bg-light border-0 py-2" placeholder="********" onChange={handleChange} required />
                         </div>
