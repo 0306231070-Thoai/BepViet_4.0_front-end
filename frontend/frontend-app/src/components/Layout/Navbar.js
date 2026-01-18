@@ -9,12 +9,12 @@ const Navbar = ({ onToggle }) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-transparent border-bottom-0 mb-3">
       <div className="container-fluid ps-0">
-        
+
         {/* Nút toggle cho Mobile (Hiện khi màn hình nhỏ) */}
-        <button 
-            className="btn btn-outline-secondary border-0 d-md-none me-2" 
-            onClick={onToggle}
-            id="mobile-menu-toggle"
+        <button
+          className="btn btn-outline-secondary border-0 d-md-none me-2"
+          onClick={onToggle}
+          id="mobile-menu-toggle"
         >
           <i className="fa-solid fa-bars fs-5"></i>
         </button>
@@ -31,16 +31,16 @@ const Navbar = ({ onToggle }) => {
               <button onClick={login} className="btn btn-outline-secondary">
                 Đăng nhập
               </button>
-              
+
               {/* Nút Đăng ký */}
-              <Link to="/register" className="btn btn-primary-cookpad">
+              <Link to="/Login" className="btn btn-primary-cookpad">
                 Đăng ký
               </Link>
             </div>
           ) : (
             /* === TRƯỜNG HỢP 2: ĐÃ ĐĂNG NHẬP (USER) === */
             <div className="d-flex align-items-center gap-3">
-              
+
               {/* 1. Nút A.I Gợi ý */}
               <button
                 className="btn btn-ai-magic rounded-pill px-3"
@@ -65,7 +65,7 @@ const Navbar = ({ onToggle }) => {
                     style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }}
                   />
                 </div>
-                
+
                 {/* Menu sổ xuống khi bấm vào ảnh */}
                 <ul className="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                   <li className="px-3 py-2 border-bottom mb-2">
@@ -83,7 +83,7 @@ const Navbar = ({ onToggle }) => {
                     </Link>
                   </li>
                   <li>
-                    <Link className="dropdown-item" to="/profile">
+                    <Link className="dropdown-item" to="/Profile">
                       <i className="fa-regular fa-id-card me-2"></i> Hồ sơ của tôi
                     </Link>
                   </li>
