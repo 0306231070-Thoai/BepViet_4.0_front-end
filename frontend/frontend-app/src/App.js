@@ -16,12 +16,16 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Login />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/profile" element={<Profile />} />
+
         {/* Ví dụ sau này thêm trang chi tiết món ăn */}
         {/* <Route path="recipes/:id" element={<RecipeDetail />} /> */}
 
       </Route>
 
       {/* Sau này làm trang Admin hoặc Login thì thêm Route ở ngoài này */}
+
     </Routes>
   );
 }
