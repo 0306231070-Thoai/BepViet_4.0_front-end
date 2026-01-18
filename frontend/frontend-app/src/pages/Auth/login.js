@@ -29,7 +29,7 @@ const Login = () => {
                 localStorage.setItem('token', res.data.access_token);
                 localStorage.setItem('user', JSON.stringify(res.data.user));
                 alert(isLogin ? 'Đăng nhập thành công!' : 'Đăng ký thành công!');
-                navigate('/profile');
+                navigate('/homepage');
             }
         } catch (err) {
             if (err.response?.status === 422) {
