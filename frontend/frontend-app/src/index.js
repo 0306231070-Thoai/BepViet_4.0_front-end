@@ -3,11 +3,21 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom'; // PHẢI có dòng này
 import App from './App';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+// --- QUAN TRỌNG: Import CSS ---
+import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap CSS
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Bootstrap JS (cho Dropdown, Modal)
+
+
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import './assets/css/index.css'; 
+
+import { AuthProvider } from './contexts/AuthContext';
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter> {/* Bắt buộc bao bọc App ở đây */}
-      <App />
+   <BrowserRouter>
+      <AuthProvider> 
+        <App />
+      </AuthProvider>
     </BrowserRouter>
-  </React.StrictMode>
-);
+  </React.StrictMode>,
+)

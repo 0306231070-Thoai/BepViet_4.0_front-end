@@ -1,0 +1,419 @@
+:root {
+  --primary-color: #28a745; /* Màu xanh chủ đạo */
+  --sidebar-width: 280px; /* Chiều rộng menu khi mở */
+  --sidebar-mini-width: 80px; /* Chiều rộng menu khi đóng (trên PC) */
+  --gap: 20px; /* Khoảng cách giữa menu và nội dung */
+  --text-color: #2c3e50;
+  --bg-light: #f0fdf4; /* Màu nền xám nhẹ */
+}
+
+/* --- Cấu trúc Body & Scrollbar --- */
+body {
+  background-color: var(--bg-light);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color);
+  overflow-x: hidden;
+  padding: var(--gap); /* Tạo khoảng hở bao quanh web trên PC */
+}
+
+/* Ẩn hiện theo trạng thái đăng nhập (Khớp với script trong HTML) */
+html.guest .user-only {
+  display: none !important;
+}
+html.logged-in .guest-only {
+  display: none !important;
+}
+
+/* --- 1. Layout Wrapper (Bao quanh toàn bộ) --- */
+#wrapper {
+  display: flex;
+  width: 100%;
+  gap: var(--gap); /* Tách rời Menu và Content */
+  transition: all 0.3s ease;
+}
+
+/* --- 2. Sidebar (Menu trái) --- */
+#sidebar-wrapper {
+  width: var(--sidebar-width);
+  background: #fff;
+  min-height: calc(100vh - 40px); /* Full màn hình trừ đi padding body */
+  border-radius: 20px; /* Bo tròn góc */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ */
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  flex-direction: column;
+  position: sticky; /* Giữ menu cố định khi cuộn */
+  top: var(--gap);
+  overflow: hidden;
+  flex-shrink: 0; /* Ngăn menu bị co lại */
+}
+
+/* Header của Sidebar (Chứa Logo & Nút Toggle) */
+.sidebar-header {
+  padding: 0 20px;
+  height: 80px; /* Chiều cao cố định */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid transparent; /* Chuẩn bị cho border nếu cần */
+}
+
+.logo-img {
+  height: 32px;
+  transition: opacity 0.2s;
+}
+
+/* Nút 3 gạch (Toggle) nằm trong Sidebar */
+#menu-toggle {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+#menu-toggle:hover {
+  background-color: #f5f5f5;
+  color: var(--primary-color);
+}
+
+/* Danh sách liên kết Menu */
+.list-group-item {
+  border: none;
+  padding: 14px 20px;
+  font-size: 1rem;
+  color: #555;
+  font-weight: 500;
+  margin: 4px 12px; /* Cách lề 2 bên để tạo hiệu ứng nút nổi */
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.list-group-item:hover,
+.list-group-item.active {
+  background-color: #fff8f2;
+  color: var(--primary-color);
+}
+
+.list-group-item i {
+  min-width: 40px; /* Cố định chiều rộng icon để thẳng hàng */
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.list-group-item span {
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+/* Footer nhỏ trong Sidebar */
+.sidebar-footer-text {
+  border-top: 1px solid #f0f0f0;
+  margin: 0 20px;
+  padding-top: 20px !important;
+}
+
+/* --- 3. Content Area (Nội dung phải) --- */
+/* --- 3. Content Area (Khu vực nội dung phải) --- */
+#page-content-wrapper {
+  flex-grow: 1;
+  width: 100%;
+  min-width: 0;
+  transition: all 0.3s ease;
+
+  /* --- STYLE MỚI: Biến nội dung thành thẻ nổi --- */
+  background: #fff; /* Nền trắng */
+  border-radius: 20px; /* Bo góc tròn trịa */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ */
+  padding: 0 30px 30px 30px; /* Khoảng cách nội dung bên trong */
+  min-height: calc(100vh - 40px); /* Chiều cao bằng Sidebar */
+
+  /* Layout bên trong */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tùy chỉnh Navbar để không bị dính sát mép trên */
+.navbar {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Responsive Mobile */
+@media (max-width: 768px) {
+  /* ... giữ nguyên các code cũ ... */
+
+  /* Trên mobile, bỏ hiệu ứng nổi của content để tiết kiệm diện tích */
+  #page-content-wrapper {
+    border-radius: 0;
+    box-shadow: none;
+    min-height: 100vh;
+    padding: 15px;
+  }
+}
+
+/* --- 4. TRẠNG THÁI TOGGLED (Khi đóng Menu trên PC) --- */
+#wrapper.toggled #sidebar-wrapper {
+  width: var(--sidebar-mini-width);
+}
+
+/* Ẩn Logo to */
+#wrapper.toggled .logo-img {
+  display: none;
+  opacity: 0;
+}
+
+/* Căn giữa nút Toggle */
+#wrapper.toggled .sidebar-header {
+  justify-content: center;
+  padding: 0;
+}
+
+/* Ẩn chữ trong menu */
+#wrapper.toggled .list-group-item span {
+  opacity: 0;
+  display: none;
+}
+
+/* Căn giữa icon menu */
+#wrapper.toggled .list-group-item {
+  padding: 14px 0;
+  justify-content: center;
+  margin: 4px 8px;
+}
+#wrapper.toggled .list-group-item i {
+  margin: 0;
+}
+
+/* Ẩn footer text */
+#wrapper.toggled .sidebar-footer-text {
+  display: none;
+}
+
+/* --- 5. Components (Card, Button, Search...) --- */
+
+/* Buttons */
+.btn-primary-cookpad {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  font-weight: 600;
+}
+.btn-primary-cookpad:hover {
+  background-color: #e67310;
+  color: white;
+}
+
+.btn-ai-magic {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+}
+.btn-ai-magic:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(118, 75, 162, 0.3);
+}
+
+/* User Avatar */
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Search Box */
+.search-container {
+  max-width: 600px;
+  margin: 40px auto;
+  text-align: center;
+}
+.cookpad-logo-main {
+  width: 180px;
+  margin-bottom: 20px;
+}
+.search-box {
+  position: relative;
+}
+.search-box input {
+  height: 50px;
+  padding-right: 100px;
+  border-radius: 25px; /* Bo tròn kiểu Google */
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.search-box input:focus {
+  box-shadow: 0 4px 12px rgba(255, 140, 40, 0.15);
+  border-color: var(--primary-color);
+}
+.search-box .btn-search {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  bottom: 5px;
+  border-radius: 20px;
+  padding: 0 25px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  font-weight: 600;
+}
+
+/* Trending Cards */
+.trend-card {
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+.trend-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+.trend-card:hover img {
+  transform: scale(1.1);
+}
+.trend-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  display: flex;
+  align-items: flex-end;
+  padding: 12px;
+}
+.trend-text {
+  color: white;
+  font-weight: bold;
+  margin: 0;
+  font-size: 0.95rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Footer */
+footer {
+  background-color: #fff;
+  margin-top: 40px;
+  border-radius: 20px 20px 0 0;
+}
+.social-btn {
+  width: 36px;
+  height: 36px;
+  background: #f0f0f0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  text-decoration: none;
+  margin-right: 10px;
+  transition: 0.2s;
+}
+.social-btn:hover {
+  background: var(--primary-color);
+  color: white;
+}
+.footer-link {
+  color: #666;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 8px;
+  transition: 0.2s;
+}
+.footer-link:hover {
+  color: var(--primary-color);
+  padding-left: 5px;
+}
+
+/* --- 6. RESPONSIVE MOBILE (< 768px) --- */
+@media (max-width: 768px) {
+  body {
+    padding: 0;
+    background-color: #fff;
+  }
+
+  #wrapper {
+    gap: 0;
+  } /* Bỏ khoảng cách trên mobile */
+
+  #sidebar-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    margin-left: -100%; /* Ẩn menu sang trái */
+    border-radius: 0;
+    width: 280px !important; /* Luôn rộng 280px khi mở */
+    transition: margin-left 0.3s ease;
+  }
+
+  /* Trạng thái mở menu trên mobile */
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: 0; /* Trượt ra */
+    width: 280px;
+  }
+
+  /* Hiển thị lại các thành phần bị ẩn bởi logic Desktop */
+  #wrapper.toggled .logo-img {
+    display: block;
+    opacity: 1;
+  }
+  #wrapper.toggled .list-group-item span {
+    display: inline;
+    opacity: 1;
+  }
+  #wrapper.toggled .sidebar-header {
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+  #wrapper.toggled .list-group-item {
+    justify-content: flex-start;
+    margin: 4px 12px;
+    padding: 14px 20px;
+  }
+  #wrapper.toggled .sidebar-footer-text {
+    display: block;
+  }
+
+  /* Xử lý lớp phủ mờ khi mở menu */
+  #page-content-wrapper {
+    padding: 15px;
+  }
+  #wrapper.toggled #page-content-wrapper {
+    opacity: 0.3; /* Làm mờ nội dung */
+    pointer-events: none; /* Không cho click vào nội dung */
+  }
+
+  /* Ẩn nút toggle trong sidebar trên mobile (vì đã có nút X hoặc bấm ra ngoài) */
+  #menu-toggle {
+    display: none;
+  }
+
+  /* Hiện nút toggle trên Navbar */
+  #mobile-menu-toggle {
+    display: block;
+  }
+}
+
+/* CSS hỗ trợ script trên: Ẩn hiện ngay từ khi load trang */
+html.guest .user-only {
+  display: none !important;
+}
+html.logged-in .guest-only {
+  display: none !important;
+}
