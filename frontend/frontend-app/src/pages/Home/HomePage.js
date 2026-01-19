@@ -17,7 +17,7 @@ const HomePage = () => {
 
         // 2. Kiểm tra nếu có lỗi mạng hoặc lỗi 404/500
         if (!response.ok) {
-           throw new Error(`Lỗi HTTP: ${response.status}`);
+          throw new Error(`Lỗi HTTP: ${response.status}`);
         }
 
         // 3. Chuyển đổi dữ liệu nhận được sang JSON (Axios tự làm bước này, nhưng fetch thì phải tự làm)
@@ -58,7 +58,9 @@ const HomePage = () => {
     <>
       <div className="container">
         {/* Search Section */}
+
         <div className="search-container text-center py-4">
+<<<<<<< HEAD
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Cookpad_logo.svg/1200px-Cookpad_logo.svg.png"
             alt="Cookpad"
@@ -66,13 +68,28 @@ const HomePage = () => {
             style={{ maxWidth: '200px' }}
           />
           <div className="search-box mt-3 mx-auto" style={{ maxWidth: '600px' }}>
+=======
+          <img src={logo} alt="Bếp Việt Logo"
+            style={{
+              width: '75px',   // Chỉnh số này to nhỏ tùy ý
+              height: 'auto',   // Giữ nguyên tỷ lệ ảnh, không bị lùn hay dẹt
+              objectFit: 'contain' // Đảm bảo ảnh nằm gọn trong khung
+            }}
+            className="logo-img" />
+          <div className="search-box mt-3 " style={{ maxWidth: '600px' }}>
+>>>>>>> f5a5de9e873c5d10b26996cdb09996f76e06bd1d
             <div className="input-group">
-                <input
+              <input
                 type="text"
                 className="form-control form-control-lg"
                 placeholder="Tìm tên món hay nguyên liệu..."
+<<<<<<< HEAD
                 />
                 <button className="btn btn-warning text-white fw-bold">Tìm Kiếm</button>
+=======
+              />
+              <button className="btn btn-warning text-white fw-bold " style={{ backgroundColor: '#28a745', borderColor: '#28a745' }}>Tìm Kiếm</button>
+>>>>>>> f5a5de9e873c5d10b26996cdb09996f76e06bd1d
             </div>
           </div>
         </div>
@@ -90,16 +107,16 @@ const HomePage = () => {
             homeData.featured_recipes.map((recipe) => (
               <div className="col-6 col-md-3" key={recipe.id}>
                 <div className="trend-card position-relative rounded overflow-hidden shadow-sm">
-                  <img 
-                    src={getImageUrl(recipe.main_image)} 
-                    alt={recipe.title} 
+                  <img
+                    src={getImageUrl(recipe.main_image)}
+                    alt={recipe.title}
                     className="w-100 object-fit-cover"
                     style={{ height: '200px' }}
                   />
                   <div className="trend-card-overlay position-absolute bottom-0 start-0 w-100 p-2 bg-dark bg-opacity-50 text-white">
                     <p className="trend-text fw-bold mb-0 text-truncate">{recipe.title}</p>
                     <small style={{ fontSize: '0.7rem' }}>
-                        <i className="fa-regular fa-clock me-1"></i>{recipe.cooking_time || 0}p
+                      <i className="fa-regular fa-clock me-1"></i>{recipe.cooking_time || 0}p
                     </small>
                   </div>
                 </div>
