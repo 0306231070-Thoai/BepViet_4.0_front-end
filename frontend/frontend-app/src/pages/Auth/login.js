@@ -29,7 +29,8 @@ const Login = () => {
                 localStorage.setItem('token', res.data.access_token);
                 localStorage.setItem('user', JSON.stringify(res.data.user));
                 alert(isLogin ? 'Đăng nhập thành công!' : 'Đăng ký thành công!');
-                navigate('/homepage');
+                // Thay vì navigate('/'), hãy dùng:
+                window.location.href = '/';
             }
         } catch (err) {
             if (err.response?.status === 422) {
