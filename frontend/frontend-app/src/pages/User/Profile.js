@@ -8,7 +8,7 @@ import Sidebar from '../../components/Layout/Sidebar';
 import Footer from '../../components/Layout/footer';
 
 // Import CSS (Chú ý chữ Css viết hoa theo cấu trúc của bạn)
-import '../../assets/Css/profile.css';
+import '../../assets/css/profile.css';
 
 const Profile = () => {
     const navigate = useNavigate();

@@ -59,19 +59,23 @@ const HomePage = () => {
     <>
       <div className="container">
         {/* Search Section */}
-        <div className="search-container">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Cookpad_logo.svg/1200px-Cookpad_logo.svg.png"
-            alt="Cookpad"
-            className="cookpad-logo-main"
-          />
-          <div className="search-box mt-3">
-            <input
-              type="text"
-              className="form-control form-control-lg"
-              placeholder="Tìm tên món hay nguyên liệu..."
-            />
-            <button className="btn-search">Tìm Kiếm</button>
+        <div className="search-container text-center py-4">
+         <img src={logo} alt="Bếp Việt Logo"   
+         style={{ 
+    width: '75px',   // Chỉnh số này to nhỏ tùy ý
+    height: 'auto',   // Giữ nguyên tỷ lệ ảnh, không bị lùn hay dẹt
+    objectFit: 'contain' // Đảm bảo ảnh nằm gọn trong khung
+  }}
+         className="logo-img"/>
+          <div className="search-box mt-3 " style={{ maxWidth: '600px' }}>
+            <div className="input-group">
+                <input
+                type="text"
+                className="form-control form-control-lg"
+                placeholder="Tìm tên món hay nguyên liệu..."
+                />
+                <button className="btn btn-warning text-white fw-bold " style={{ backgroundColor: '#28a745', borderColor: '#28a745' }}>Tìm Kiếm</button>
+            </div>
           </div>
         </div>
 
