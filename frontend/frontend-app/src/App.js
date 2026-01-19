@@ -19,7 +19,6 @@ function App() {
 
         {/* Route Con: Trang chủ (Hiện ở vị trí Outlet của MainLayout) */}
         <Route path="/homepage" element={<HomePage />} />
-        <Route path="/profile" element={<Profile />} />
 
         {/* Trang cá nhân - Thiết lập tài khoản và quản lý Cookbook [cite: 43] */}
 
@@ -32,6 +31,7 @@ function App() {
       {/* Sau này làm trang Admin hoặc Login thì thêm Route ở ngoài này */}
       <Route path="/login" element={<Login />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
+      <Route path="/profile" element={<Profile />} />
 
     </Routes>
   );
