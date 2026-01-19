@@ -19,9 +19,10 @@ const HomePage = () => {
         {/* Search Section */}
         <div className="search-container">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Cookpad_logo.svg/1200px-Cookpad_logo.svg.png"
+            src="/img/logo.png"
             alt="Cookpad"
-            className="cookpad-logo-main"
+            className="img-fluid"
+            style={{ maxHeight: '80px', objectFit: 'contain' }}
           />
           <div className="search-box mt-3">
             <input
