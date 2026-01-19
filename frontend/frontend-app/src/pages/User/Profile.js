@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Layout/Navbar';
 import Sidebar from '../../components/Layout/Sidebar';
 import Footer from '../../components/Layout/footer';
-import '../../assets/Css/profile.css';
+
+// Import CSS (Chú ý chữ Css viết hoa theo cấu trúc của bạn)
+import '../../assets/css/profile.css';
 
 const Profile = () => {
     const navigate = useNavigate();

@@ -16,8 +16,10 @@ function App() {
         Phù hợp cho các tính năng: Khám phá, Trang cá nhân, Bảng tin [cite: 33, 37, 43]
       */}
       <Route path="/" element={<MainLayout />}>
-        {/* Trang chủ - Nơi hiển thị Bảng tin cá nhân hóa [cite: 37] */}
-        <Route index element={<HomePage />} />
+
+        {/* Route Con: Trang chủ (Hiện ở vị trí Outlet của MainLayout) */}
+        <Route path="/homepage" element={<HomePage />} />
+        <Route path="/profile" element={<Profile />} />
 
         {/* Trang cá nhân - Thiết lập tài khoản và quản lý Cookbook [cite: 43] */}
 
@@ -26,17 +28,11 @@ function App() {
           - <Route path="create-recipe" element={<CreateRecipe />} /> [cite: 25]
         */}
       </Route>
-      <Route path="profile" element={<Profile />} />
 
-      {/* Nhóm Route độc lập (Không dùng chung Layout chính)
-        Thường dùng cho các trang xác thực hoặc trang lỗi
-      */}
+      {/* Sau này làm trang Admin hoặc Login thì thêm Route ở ngoài này */}
       <Route path="/login" element={<Login />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
 
-      {/* Trang lỗi 404 (Nếu cần)
-        <Route path="*" element={<NotFound />} /> 
-      */}
     </Routes>
   );
 }

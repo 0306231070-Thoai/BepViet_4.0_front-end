@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const Navbar = ({ onToggle }) => {
   // Lấy hàm login, logout và trạng thái từ Context
-  const { isLoggedIn, login, logout } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-transparent border-bottom-0 mb-3">
@@ -28,9 +28,9 @@ const Navbar = ({ onToggle }) => {
           {!isLoggedIn ? (
             <div className="d-flex gap-2">
               {/* Nút đăng nhập (Demo gọi hàm login ngay lập tức) */}
-              <button onClick={login} className="btn btn-outline-secondary">
+              <Link to="/Login" className="btn btn-primary-cookpad">
                 Đăng nhập
-              </button>
+              </Link>
 
               {/* Nút Đăng ký */}
               <Link to="/Login" className="btn btn-primary-cookpad">
@@ -89,9 +89,9 @@ const Navbar = ({ onToggle }) => {
                   </li>
                   <li><hr className="dropdown-divider" /></li>
                   <li>
-                    <button className="dropdown-item text-danger" onClick={logout}>
+                    <Link className="dropdown-item text-danger" onClick={logout}>
                       <i className="fa-solid fa-right-from-bracket me-2"></i> Đăng xuất
-                    </button>
+                    </Link>
                   </li>
                 </ul>
               </div>

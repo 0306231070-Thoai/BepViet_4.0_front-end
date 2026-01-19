@@ -1,58 +1,116 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import logo from "../../assets/img/logo.png";
+
 
 const HomePage = () => {
-  // Dữ liệu giả để map (thay vì code cứng nhiều div)
-  const trends = [
-    { title: "Món ngon từ heo", img: "https://images.unsplash.com/photo-1606509036365-5555c478bc0f?w=400&q=80" },
-    { title: "Bánh ngọt đơn giản", img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80" },
-    { title: "Thịt ba chỉ", img: "https://images.unsplash.com/photo-1544025162-d76690b67f61?w=400&q=80" },
-    { title: "Cá hồi", img: "https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?w=400&q=80" },
-    { title: "Món khoai tây", img: "https://images.unsplash.com/photo-1518977676605-dc56455512a5?w=400&q=80" },
-    { title: "Gỏi / Nộm", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80" },
-    { title: "Sườn xào", img: "https://images.unsplash.com/photo-1544511916-0148ccdeb877?w=400&q=80" },
-    { title: "Món tôm", img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&q=80" },
-  ];
+  const [homeData, setHomeData] = useState({
+    featured_recipes: [],
+    new_recipes: []
+  });
+  const [loading, setLoading] = useState(true);
+
+  // Gọi API bằng fetch
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      try {
+        // 1. Gọi đến API
+        const response = await fetch('http://localhost:8000/api/home');
+
+        // 2. Kiểm tra nếu có lỗi mạng hoặc lỗi 404/500
+        if (!response.ok) {
+          throw new Error(`Lỗi HTTP: ${response.status}`);
+        }
+
+        // 3. Chuyển đổi dữ liệu nhận được sang JSON (Axios tự làm bước này, nhưng fetch thì phải tự làm)
+        const jsonData = await response.json();
+
+        // 4. Lưu vào state (kiểm tra cấu trúc đúng như Controller trả về)
+        if (jsonData.status === 'success') {
+          setHomeData(jsonData.data);
+        }
+      } catch (error) {
+        console.error("Lỗi khi gọi API:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHomeData();
+  }, []);
+
+  // Hàm xử lý ảnh (Giữ nguyên)
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return 'https://via.placeholder.com/400x300?text=No+Image';
+    if (imagePath.startsWith('http')) return imagePath;
+    return `http://localhost:8000/storage/${imagePath}`;
+  };
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
       <div className="container">
         {/* Search Section */}
-        <div className="search-container">
-          <img
-            src="/img/logo.png"
-            alt="Cookpad"
-            className="img-fluid"
-            style={{ maxHeight: '80px', objectFit: 'contain' }}
-          />
-          <div className="search-box mt-3">
-            <input
-              type="text"
-              className="form-control form-control-lg"
-              placeholder="Tìm tên món hay nguyên liệu..."
-            />
-            <button className="btn-search">Tìm Kiếm</button>
+
+        <div className="search-container text-center py-4">
+          <img src={logo} alt="Bếp Việt Logo"
+            style={{
+              width: '75px',   // Chỉnh số này to nhỏ tùy ý
+              height: 'auto',   // Giữ nguyên tỷ lệ ảnh, không bị lùn hay dẹt
+              objectFit: 'contain' // Đảm bảo ảnh nằm gọn trong khung
+            }}
+            className="logo-img" />
+          <div className="search-box mt-3 " style={{ maxWidth: '600px' }}>
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control form-control-lg"
+                placeholder="Tìm tên món hay nguyên liệu..."
+              />
+              <button className="btn btn-warning text-white fw-bold " style={{ backgroundColor: '#28a745', borderColor: '#28a745' }}>Tìm Kiếm</button>
+            </div>
           </div>
         </div>
 
         {/* Trending Section */}
-        <h5 className="mb-3 text-secondary fw-bold">
-          Từ Khóa Thịnh Hành
+        <h5 className="mb-3 text-secondary fw-bold mt-4">
+          Gợi Ý Xu Hướng Món Ăn
           <small className="float-end text-muted fw-normal" style={{ fontSize: '0.8rem' }}>
-            Cập nhật hôm nay
+            Cập nhật mới nhất
           </small>
         </h5>
 
         <div className="row g-3">
-          {trends.map((item, index) => (
-            <div className="col-6 col-md-3" key={index}>
-              <div className="trend-card">
-                <img src={item.img} alt={item.title} />
-                <div className="trend-card-overlay">
-                  <p className="trend-text">{item.title}</p>
+          {homeData.featured_recipes && homeData.featured_recipes.length > 0 ? (
+            homeData.featured_recipes.map((recipe) => (
+              <div className="col-6 col-md-3" key={recipe.id}>
+                <div className="trend-card position-relative rounded overflow-hidden shadow-sm">
+                  <img
+                    src={getImageUrl(recipe.main_image)}
+                    alt={recipe.title}
+                    className="w-100 object-fit-cover"
+                    style={{ height: '200px' }}
+                  />
+                  <div className="trend-card-overlay position-absolute bottom-0 start-0 w-100 p-2 bg-dark bg-opacity-50 text-white">
+                    <p className="trend-text fw-bold mb-0 text-truncate">{recipe.title}</p>
+                    <small style={{ fontSize: '0.7rem' }}>
+                      <i className="fa-regular fa-clock me-1"></i>{recipe.cooking_time || 0}p
+                    </small>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="text-center text-muted">Không có dữ liệu món ăn.</p>
+          )}
         </div>
       </div>
 
@@ -111,3 +169,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+

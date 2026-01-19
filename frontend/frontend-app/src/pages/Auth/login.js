@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../../assets/Css/login.css';
+import '../../assets/css/login.css';
 
 const Login = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -38,25 +38,24 @@ const Login = () => {
             const data = await response.json();
 
             if (response.ok) {
-                // Xử lý khi thành công
                 if (data.access_token) {
                     localStorage.setItem('token', data.access_token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     alert(isLogin ? 'Đăng nhập thành công!' : 'Đăng ký thành công!');
-                    navigate('/profile');
+
+                    // Sử dụng window.location để refresh app, giúp Navbar nhận trạng thái mới
+                    window.location.href = '/';
                 }
             } else {
-                // Xử lý lỗi từ Server (Lỗi 422, 401, 500...)
+                // Xử lý lỗi validation (422) hoặc lỗi khác
                 if (response.status === 422 && data.errors) {
-                    // Lấy thông báo lỗi đầu tiên từ mảng lỗi của Validation
                     const firstError = Object.values(data.errors).flat()[0];
                     setError(firstError);
                 } else {
-                    setError(data.message || 'Có lỗi xảy ra, vui lòng thử lại!');
+                    setError(data.message || 'Tên đăng nhập hoặc mật khẩu không đúng!');
                 }
             }
         } catch (err) {
-            // Lỗi kết nối mạng hoặc lỗi cú pháp
             setError('Không thể kết nối đến máy chủ!');
         }
     };
@@ -64,7 +63,7 @@ const Login = () => {
     return (
         <div className="login-page-bg d-flex align-items-center justify-content-center">
             <div className="login-card shadow d-flex flex-column flex-md-row">
-                {/* Cột trái: Hình ảnh tròn */}
+                {/* Cột trái: Hình ảnh */}
                 <div className="login-visual d-flex align-items-center justify-content-center p-4">
                     <div className="image-circle-container">
                         <img
@@ -118,7 +117,7 @@ const Login = () => {
                                         Google
                                     </button>
                                 </div>
-                                <div className="divider-text mb-4"><span>hoặc bằng email</span></div>
+                                <div className="divider-text mb-4"><span>hoặc bằng tên đăng nhập</span></div>
                             </>
                         )}
 
@@ -137,11 +136,17 @@ const Login = () => {
                         <div className="mb-4">
                             <div className="d-flex justify-content-between">
                                 <label className="form-label small fw-bold text-muted">Mật khẩu</label>
-                                {isLogin &&
-                                    <Link to="/forgotPassword" className="small text-muted text-decoration-none">Quên Mật khẩu?</Link>}
+                                {isLogin && <Link to="/forgotPassword" house className="small text-muted text-decoration-none">Quên Mật khẩu?</Link>}
                             </div>
                             <input type="password" name="password" className="form-control bg-light border-0 py-2" placeholder="********" onChange={handleChange} required />
                         </div>
+
+                        {!isLogin && (
+                            <div className="mb-4">
+                                <label className="form-label small fw-bold text-muted">Xác nhận mật khẩu</label>
+                                <input type="password" name="password_confirmation" className="form-control bg-light border-0 py-2" placeholder="********" onChange={handleChange} required />
+                            </div>
+                        )}
 
                         <button type="submit" className="btn btn-success-custom w-100 py-2 fw-bold text-uppercase">
                             {isLogin ? 'Đăng nhập' : 'Tạo tài khoản'}
