@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import logo from "../../assets/img/logo.png";
-
+// Không cần import axios nữa
 
 const HomePage = () => {
   const [homeData, setHomeData] = useState({
@@ -60,28 +59,27 @@ const HomePage = () => {
       <div className="container">
         {/* Search Section */}
         <div className="search-container text-center py-4">
-         <img src={logo} alt="Bếp Việt Logo"   
-         style={{ 
-    width: '75px',   // Chỉnh số này to nhỏ tùy ý
-    height: 'auto',   // Giữ nguyên tỷ lệ ảnh, không bị lùn hay dẹt
-    objectFit: 'contain' // Đảm bảo ảnh nằm gọn trong khung
-  }}
-         className="logo-img"/>
-          <div className="search-box mt-3 " style={{ maxWidth: '600px' }}>
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Cookpad_logo.svg/1200px-Cookpad_logo.svg.png"
+            alt="Cookpad"
+            className="cookpad-logo-main"
+            style={{ maxWidth: '200px' }}
+          />
+          <div className="search-box mt-3 mx-auto" style={{ maxWidth: '600px' }}>
             <div className="input-group">
                 <input
                 type="text"
                 className="form-control form-control-lg"
                 placeholder="Tìm tên món hay nguyên liệu..."
                 />
-                <button className="btn btn-warning text-white fw-bold " style={{ backgroundColor: '#28a745', borderColor: '#28a745' }}>Tìm Kiếm</button>
+                <button className="btn btn-warning text-white fw-bold">Tìm Kiếm</button>
             </div>
           </div>
         </div>
 
         {/* Trending Section */}
         <h5 className="mb-3 text-secondary fw-bold mt-4">
-          Gợi Ý Xu Hướng Món Ăn
+          Gợi Ý Hôm Nay
           <small className="float-end text-muted fw-normal" style={{ fontSize: '0.8rem' }}>
             Cập nhật mới nhất
           </small>
