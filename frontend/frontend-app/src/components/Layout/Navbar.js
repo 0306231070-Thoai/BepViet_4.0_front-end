@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const Navbar = ({ onToggle }) => {
   // Lấy hàm login, logout và trạng thái từ Context
-  const { isLoggedIn, login, logout } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-transparent border-bottom-0 mb-3">

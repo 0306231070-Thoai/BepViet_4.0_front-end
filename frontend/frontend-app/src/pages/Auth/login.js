@@ -56,16 +56,14 @@ const Login = () => {
                         />
                     </div>
                     {/* Icon mũi tên xoay dưới hình nếu cần giống mẫu */}
-                    <div className="refresh-icon">
-                        <i className="fa-solid fa-rotate-right"></i>
-                    </div>
+
                 </div>
 
                 {/* Cột phải: Form */}
                 <div className="login-form-area p-4 p-lg-5 position-relative">
                     {/* Nút quay lại icon tròn */}
                     <button onClick={() => navigate('/')} className="back-btn-circle">
-                        <i className="fa-solid fa-arrow-left">←</i>
+                        <i className="fa-solid fa-arrow-left"></i>
                     </button>
 
                     <div className="text-center mb-4">
