@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import '../../assets/Css/login.css';
+
 const Login = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [formData, setFormData] = useState({
@@ -21,27 +21,45 @@ const Login = () => {
         e.preventDefault();
         setError('');
 
-        const url = isLogin ? 'http://127.0.0.1:8000/api/login' : 'http://127.0.0.1:8000/api/register';
+        const url = isLogin
+            ? 'http://127.0.0.1:8000/api/login'
+            : 'http://127.0.0.1:8000/api/register';
 
         try {
-            const res = await axios.post(url, formData);
-            if (res.data.access_token) {
-                localStorage.setItem('token', res.data.access_token);
-                localStorage.setItem('user', JSON.stringify(res.data.user));
-                alert(isLogin ? 'Đăng nhập thành công!' : 'Đăng ký thành công!');
-                window.location.href = '/';
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Xử lý khi thành công
+                if (data.access_token) {
+                    localStorage.setItem('token', data.access_token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    alert(isLogin ? 'Đăng nhập thành công!' : 'Đăng ký thành công!');
+                    navigate('/profile');
+                }
+            } else {
+                // Xử lý lỗi từ Server (Lỗi 422, 401, 500...)
+                if (response.status === 422 && data.errors) {
+                    // Lấy thông báo lỗi đầu tiên từ mảng lỗi của Validation
+                    const firstError = Object.values(data.errors).flat()[0];
+                    setError(firstError);
+                } else {
+                    setError(data.message || 'Có lỗi xảy ra, vui lòng thử lại!');
+                }
             }
         } catch (err) {
-            if (err.response?.status === 422) {
-                const serverErrors = err.response.data.errors;
-                const firstError = Object.values(serverErrors).flat()[0];
-                setError(firstError);
-            } else {
-                setError(err.response?.data?.message || 'Không thể kết nối đến máy chủ!');
-            }
+            // Lỗi kết nối mạng hoặc lỗi cú pháp
+            setError('Không thể kết nối đến máy chủ!');
         }
     };
-
 
     return (
         <div className="login-page-bg d-flex align-items-center justify-content-center">
@@ -55,12 +73,10 @@ const Login = () => {
                             className="img-fluid food-circle"
                         />
                     </div>
-
                 </div>
 
                 {/* Cột phải: Form */}
                 <div className="login-form-area p-4 p-lg-5 position-relative">
-                    {/* Nút quay lại icon tròn */}
                     <button onClick={() => navigate('/')} className="back-btn-circle">
                         <i className="fa-solid fa-arrow-left"></i>
                     </button>
@@ -75,7 +91,6 @@ const Login = () => {
                             />
                         </div>
 
-                        {/* Tabs điều hướng */}
                         <div className="auth-tabs d-flex justify-content-center gap-4 border-bottom">
                             <button
                                 className={`tab-btn ${isLogin ? 'active' : ''}`}
@@ -98,7 +113,6 @@ const Login = () => {
                         {isLogin && (
                             <>
                                 <div className="d-grid gap-2 mb-3">
-
                                     <button type="button" className="btn btn-outline-dark fw-bold py-2 border-secondary">
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" width="18" className="me-3" alt="google" />
                                         Google
