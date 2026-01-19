@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import logo from "../../assets/img/logo.png";
 
 // Nhận prop onToggle được truyền từ MainLayout
 const Sidebar = ({ onToggle }) => { 
@@ -18,8 +19,13 @@ const Sidebar = ({ onToggle }) => {
         <div className="sidebar-brand text-danger fw-bold fs-4 p-0">
           <Link to="/">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Cookpad_logo.svg/1200px-Cookpad_logo.svg.png"
-              alt="Logo"
+              src={logo}
+              alt="logo"
+              style={{ 
+                width: '50px',   // Chỉnh số này to nhỏ tùy ý
+                height: 'auto',   // Giữ nguyên tỷ lệ ảnh, không bị lùn hay dẹt
+                objectFit: 'contain' // Đảm bảo ảnh nằm gọn trong khung
+              }}
               className="logo-img"
             />
           </Link>
