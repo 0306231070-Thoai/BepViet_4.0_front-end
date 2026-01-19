@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../../assets/Css/login.css';
+import '../../assets/css/login.css';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -15,11 +14,26 @@ const ForgotPassword = () => {
         setMessage('');
 
         try {
-            // Thay đổi URL này theo API Laravel của bạn
-            const res = await axios.post('http://127.0.0.1:8000/api/forgot-password', { email });
-            setMessage('Yêu cầu đã được gửi! Vui lòng kiểm tra email của bạn.');
+            const response = await fetch('http://127.0.0.1:8000/api/forgot-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ email })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Hiển thị thông báo thành công từ server
+                setMessage(data.message || 'Yêu cầu đã được gửi! Vui lòng kiểm tra email của bạn.');
+            } else {
+                // Xử lý lỗi (ví dụ: email không tồn tại)
+                setError(data.message || 'Email không tồn tại trong hệ thống!');
+            }
         } catch (err) {
-            setError(err.response?.data?.message || 'Email không tồn tại trong hệ thống!');
+            setError('Không thể kết nối đến máy chủ!');
         }
     };
 
@@ -27,7 +41,7 @@ const ForgotPassword = () => {
         <div className="login-page-bg d-flex align-items-center justify-content-center">
             <div className="login-card shadow d-flex flex-column flex-md-row">
 
-                {/* Cột trái: Giữ nguyên hình ảnh tròn giống Login để đồng bộ */}
+                {/* Cột trái: Giữ nguyên hình ảnh tròn để tạo trải nghiệm thông minh, đồng bộ [cite: 7] */}
                 <div className="login-visual d-flex align-items-center justify-content-center p-4">
                     <div className="image-circle-container">
                         <img
@@ -36,15 +50,13 @@ const ForgotPassword = () => {
                             className="img-fluid food-circle"
                         />
                     </div>
-                    <div className="refresh-icon">
-                        <i className="fa-solid fa-rotate-right"></i>
-                    </div>
+
                 </div>
 
                 {/* Cột phải: Form Quên mật khẩu */}
                 <div className="login-form-area p-4 p-lg-5 position-relative">
-                    {/* Nút quay lại trang chủ/login */}
-                    <button onClick={() => navigate('/')} className="back-btn-circle">
+                    {/* Nút quay lại login */}
+                    <button onClick={() => navigate('/login')} className="back-btn-circle">
                         <i className="fa-solid fa-arrow-left"></i>
                     </button>
 
@@ -86,7 +98,7 @@ const ForgotPassword = () => {
                         <div className="text-center mt-4">
                             <span
                                 className="small fw-bold text-dark cursor-pointer"
-                                onClick={() => navigate('/')}
+                                onClick={() => navigate('/login')}
                                 style={{ cursor: 'pointer' }}
                             >
                                 Quay lại trang Đăng nhập
