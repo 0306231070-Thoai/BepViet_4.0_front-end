@@ -4,6 +4,8 @@ import HomePage from './pages/Home/HomePage';
 import Login from './pages/Auth/login';
 import ForgotPassword from './pages/Auth/forgotPassword';
 import Profile from './pages/User/Profile';
+import MyCookbooks from './pages/User/MyCookbooks';
+import CookbookDetail from './pages/User/CookbookDetail';
 
 /**
  * Cấu trúc Route của dự án Bếp Việt 4.0
@@ -32,7 +34,8 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       <Route path="/profile" element={<Profile />} />
-
+      <Route path="/mycookbook" element={<MyCookbooks />} />
+      <Route path="/profile/cookbook/:id" element={<CookbookDetail />} />
     </Routes>
   );
 }
