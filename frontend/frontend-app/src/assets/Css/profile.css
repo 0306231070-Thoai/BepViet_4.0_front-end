@@ -1,78 +1,40 @@
-/* --- BỔ SUNG CHO CHUYỂN TAB (ACTIVE STATE) --- */
-
-/* Ghi đè class active cho Sidebar bên trái */
-.list-group-item.active {
-    background-color: #fff5f5 !important;
-    color: #ff4f4f !important;
-    border-left: 4px solid #ff4f4f !important;
-    font-weight: bold;
-}
-
-/* Hiệu ứng cho các nút điều hướng trong Card hồ sơ */
-.card .list-group-item {
-    cursor: pointer;
-    border: none;
-    padding: 15px 20px;
-    transition: all 0.2s ease;
-}
-
-.card .list-group-item:hover:not(.active) {
-    background-color: #f8f9fa;
-    color: #ffc107;
-    padding-left: 25px;
-    /* Hiệu ứng đẩy nhẹ sang phải */
-}
-
-/* --- GIAO DIỆN THÔNG BÁO (NOTIFICATION LIST) --- */
-
-.notification-item {
-    border-left: 4px solid transparent;
-    transition: all 0.3s ease;
-}
-
-.notification-item.unread {
-    background-color: #fff9e6;
-    /* Màu vàng nhạt cho thông báo chưa đọc */
-    border-left-color: #ffc107;
-}
-
-.notification-item:hover {
-    background-color: #f1f3f5;
-}
-
-.noti-icon {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-/* --- FORM ĐỔI MẬT KHẨU --- */
-
-.password-form-container {
-    max-width: 500px;
-}
-
-/* Badge số lượng thông báo chưa đọc */
-.badge-unread {
-    background-color: #ff4f4f;
-    color: white;
-    font-size: 0.7rem;
-    padding: 3px 6px;
-    border-radius: 50px;
-    margin-left: auto;
+:root {
+    --primary-color: #ff8c28;
 }
 
 .profile-avatar {
-    border: 4px solid #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.profile-avatar:hover {
-    transform: scale(1.05);
+/* Nút đổi ảnh màu xanh Blue giống ảnh bạn gửi */
+.btn-primary {
+    background-color: #0d6efd !important;
+    border: none;
+}
+
+/* Tùy chỉnh Menu bên trái */
+.custom-menu .list-group-item {
+    padding: 15px 20px;
+    margin-bottom: 5px;
+    border-radius: 10px !important;
+    cursor: pointer;
+    background: transparent;
+    transition: 0.3s;
+}
+
+/* Hiệu ứng Tab đang chọn: chữ xanh lá đậm như hình */
+.active-tab {
+    color: #198754 !important;
+    /* Màu Success */
+    font-weight: bold;
+    background-color: transparent !important;
+}
+
+.min-vh-50 {
+    min-height: 500px;
 }
