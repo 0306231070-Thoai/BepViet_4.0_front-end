@@ -24,7 +24,7 @@ function App() {
         {/* <Route path="recipes/:id" element={<RecipeDetail />} /> */}
 
         <Route path="blog-feed" element={<BlogFeed />} />
-        <Route path="/blog-detail/:id" element={<BlogDetail />} />
+        <Route path="/blog/:id" element={<BlogDetail />} />
 
       </Route>
 

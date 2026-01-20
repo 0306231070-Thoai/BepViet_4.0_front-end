@@ -44,7 +44,7 @@ const Login = () => {
                     alert(isLogin ? 'Đăng nhập thành công!' : 'Đăng ký thành công!');
 
                     // Sử dụng window.location để refresh app, giúp Navbar nhận trạng thái mới
-                    window.location.href = '/blog-feed';
+                    window.location.href = '/blog/1';
                 }
             } else {
                 // Xử lý lỗi validation (422) hoặc lỗi khác
