@@ -4,7 +4,6 @@ import Navbar from '../../components/Layout/Navbar';
 import Sidebar from '../../components/Layout/Sidebar';
 import Footer from '../../components/Layout/footer';
 import '../../assets/css/profile.css';
-import MyCookbooks from './MyCookbooks';
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -13,9 +12,6 @@ const Profile = () => {
     const [user, setUser] = useState(null);
     const [uploading, setUploading] = useState(false);
     const fileInputRef = useRef(null);
-    const [myRecipes, setMyRecipes] = useState([]);
-    const [, setMyCookbooks] = useState([]);
-    const [loadingData, setLoadingData] = useState(false);
     const [infoForm, setInfoForm] = useState({
         username: '',
         email: '',
@@ -169,38 +165,6 @@ const Profile = () => {
             alert("Lỗi kết nối mạng.");
         }
     };
-    const fetchMyRecipes = async () => {
-        setLoadingData(true);
-        try {
-            const token = localStorage.getItem('token');
-            const res = await fetch('http://127.0.0.1:8000/api/my-recipes', {
-                headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
-            });
-            const result = await res.json();
-            if (res.ok) setMyRecipes(result.data);
-        } catch (error) { console.error("Lỗi lấy công thức:", error); }
-        setLoadingData(false);
-    };
-
-    // Hàm lấy danh sách Cookbook của tôi
-    const fetchMyCookbooks = async () => {
-        setLoadingData(true);
-        try {
-            const token = localStorage.getItem('token');
-            const res = await fetch('http://127.0.0.1:8000/api/my-cookbooks', {
-                headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
-            });
-            const result = await res.json();
-            if (res.ok) setMyCookbooks(result.data);
-        } catch (error) { console.error("Lỗi lấy cookbook:", error); }
-        setLoadingData(false);
-    };
-
-    // Tự động gọi API khi chuyển tab
-    useEffect(() => {
-        if (activeTab === 'recipes') fetchMyRecipes();
-        if (activeTab === 'cookbooks') fetchMyCookbooks();
-    }, [activeTab]);
 
     if (loading) return <div className="text-center mt-5"><div className="spinner-border text-warning"></div></div>;
 
@@ -229,10 +193,10 @@ const Profile = () => {
                                     )}
                                 </div>
                                 <h4 className="fw-bold mb-1">{user?.username}</h4>
-                                <p className="text-muted small mb-3">{user?.email}</p>
-
+                                <p className="text-muted small mb-3 ">{user?.email}</p>
+                                <p className="text-muted small px-3 mb-4 profile-bio-text">{user?.bio ? `"${user.bio}"` : '"Chưa có tiểu sử ngắn cho người dùng này."'}</p>
                                 <button
-                                    className="btn btn-outline-primary btn-sm rounded-pill px-4 mb-4"
+                                    className="btn btn-outline-primary btn-sm rounded-pill mb-4 px-4"
                                     onClick={() => fileInputRef.current?.click()}
                                     disabled={uploading}
                                 >
@@ -242,12 +206,6 @@ const Profile = () => {
                                 <div className="list-group list-group-flush text-start border rounded-3 overflow-hidden">
                                     <button onClick={() => setActiveTab('info')} className={`list-group-item list-group-item-action py-3 border-0 ${activeTab === 'info' ? 'bg-light text-warning fw-bold' : ''}`}>
                                         <i className="bi bi-person me-2"></i> Thông tin cá nhân
-                                    </button>
-                                    <button onClick={() => setActiveTab('recipes')} className={`list-group-item list-group-item-action py-3 border-0 ${activeTab === 'recipes' ? 'bg-light text-warning fw-bold' : ''}`}>
-                                        <i className="bi bi-journal-text me-2"></i> Công thức của tôi
-                                    </button>
-                                    <button onClick={() => setActiveTab('cookbooks')} className={`list-group-item list-group-item-action py-3 border-0 ${activeTab === 'cookbooks' ? 'bg-light text-warning fw-bold' : ''}`}>
-                                        <i className="bi bi-book me-2"></i> Cookbook của tôi
                                     </button>
                                     <button onClick={() => setActiveTab('password')} className={`list-group-item list-group-item-action py-3 border-0 ${activeTab === 'password' ? 'bg-light text-warning fw-bold' : ''}`}>
                                         <i className="bi bi-shield-lock me-2"></i> Đổi mật khẩu
@@ -293,38 +251,6 @@ const Profile = () => {
                                         </form>
                                     </>
                                 )}
-                                {/* --- TAB: CÔNG THỨC --- */}
-                                {activeTab === 'recipes' && (
-                                    <>
-                                        <div className="d-flex justify-content-between align-items-center mb-4">
-                                            <h5 className="fw-bold mb-0">Công thức đã đăng</h5>
-                                            <button className="btn btn-warning btn-sm text-white rounded-pill px-3" onClick={() => navigate('/create-recipe')}>
-                                                + Thêm mới
-                                            </button>
-                                        </div>
-                                        {loadingData ? <div className="text-center py-5"><div className="spinner-border text-warning"></div></div> : (
-                                            <div className="row g-3">
-                                                {myRecipes.length > 0 ? myRecipes.map(recipe => (
-                                                    <div className="col-md-6" key={recipe.id}>
-                                                        <div className="card h-100 border-0 shadow-sm rounded-3 overflow-hidden recipe-card-mini">
-                                                            <img src={`http://127.0.0.1:8000/storage/${recipe.image}`} className="card-img-top" style={{ height: '120px', objectFit: 'cover' }} alt={recipe.title} />
-                                                            <div className="card-body p-2">
-                                                                <h6 className="card-title mb-1 text-truncate">{recipe.title}</h6>
-                                                                <div className="d-flex justify-content-between align-items-center">
-                                                                    <span className="badge bg-light text-dark small">{recipe.category?.name}</span>
-                                                                    <button className="btn btn-link btn-sm text-primary p-0" onClick={() => navigate(`/edit-recipe/${recipe.id}`)}>Sửa</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )) : <div className="text-center py-5 text-muted">Bạn chưa đăng công thức nào.</div>}
-                                            </div>
-                                        )}
-                                    </>
-                                )}
-
-                                {/* --- TAB: COOKBOOK --- */}
-                                {activeTab === 'cookbooks' && <MyCookbooks />}
                                 {activeTab === 'password' && (
                                     <>
                                         <h5 className="fw-bold mb-4">Bảo mật tài khoản</h5>
@@ -351,7 +277,7 @@ const Profile = () => {
                                                     onChange={e => setPasswordForm({ ...passwordForm, new_password_confirmation: e.target.value })} />
                                             </div>
                                             <div className="col-12 mt-4">
-                                                <button type="submit" className="btn btn-primary fw-bold px-4 rounded-3">
+                                                <button type="submit" className="btn btn-warning text-white fw-bold px-4 rounded-3">
                                                     Cập nhật mật khẩu
                                                 </button>
                                             </div>
