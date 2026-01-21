@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
+
+
 
 const BlogFeed = () => {
   const [blogs, setBlogs] = useState([]);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [typingTimeout, setTypingTimeout] = useState(null);
 
-  useEffect(() => {
-    fetchBlogs(page);
-  }, [page]);
 
-  const fetchBlogs = async (page) => {
+ 
+  const fetchBlogs = useCallback(async (page) => {
     setLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:8000/api/blog-feed?page=${page}`
+        `http://localhost:8000/api/blog-feed?page=${page}&search=${search}`
       );
       const json = await res.json();
 
@@ -26,7 +28,12 @@ const BlogFeed = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [search]);
+
+  useEffect(() => {
+    fetchBlogs(page);
+  }, [page, fetchBlogs]);
+
 
   const imageUrl = (img) => {
     if (!img) return "https://via.placeholder.com/500x350?text=No+Image";
@@ -44,12 +51,6 @@ const BlogFeed = () => {
           {/* HEADER */}
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h4 className="fw-bold mb-0">Bài viết mới nhất</h4>
-
-            <select className="form-select form-select-sm w-auto">
-              <option>Mới nhất</option>
-              <option>Xem nhiều</option>
-              <option>Review quán</option>
-            </select>
           </div>
 
           {/* LOADING */}
@@ -68,7 +69,7 @@ const BlogFeed = () => {
           {blogs.map((blog) => (
             <div
               key={blog.id}
-              className="card mb-4 border-0 shadow-sm blog-card-horizontal"
+              className="card mb-4 border-0 shadow-sm"
             >
               <div className="row g-0">
                 <div className="col-md-4">
@@ -92,16 +93,18 @@ const BlogFeed = () => {
                     {/* TITLE */}
                     <h5 className="fw-bold mt-2">
                       <Link
-                        to={`/blog/${blog.id}`}
+                        to={`/blogs/${blog.id}`}
                         className="text-dark text-decoration-none"
                       >
                         {blog.title}
                       </Link>
                     </h5>
 
-                    {/* DESC */}
-                    <p className="text-muted small line-clamp-2">
-                      {blog.excerpt || blog.content}
+                    {/* EXCERPT */}
+                    <p className="text-muted small">
+                      {blog.excerpt ||
+                        blog.content?.replace(/<[^>]+>/g, "").slice(0, 120) +
+                          "..."}
                     </p>
 
                     {/* META */}
@@ -113,6 +116,7 @@ const BlogFeed = () => {
                         {new Date(blog.created_at).toLocaleDateString()}
                       </small>
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -121,7 +125,7 @@ const BlogFeed = () => {
 
           {/* PAGINATION */}
           {lastPage > 1 && (
-            <nav className="mt-5">
+            <nav className="mt-4">
               <ul className="pagination justify-content-center">
                 <li className={`page-item ${page === 1 && "disabled"}`}>
                   <button
@@ -146,7 +150,9 @@ const BlogFeed = () => {
                   </li>
                 ))}
 
-                <li className={`page-item ${page === lastPage && "disabled"}`}>
+                <li
+                  className={`page-item ${page === lastPage && "disabled"}`}
+                >
                   <button
                     className="page-link"
                     onClick={() => setPage(page + 1)}
@@ -163,22 +169,32 @@ const BlogFeed = () => {
         <div className="col-lg-4">
 
           {/* SEARCH */}
-          <div className="blog-widget p-4 mb-4 bg-white rounded-3 shadow-sm border">
+          <div className="p-4 mb-4 bg-white rounded-3 shadow-sm border">
             <h6 className="fw-bold mb-3">Tìm bài viết</h6>
-            <div className="input-group">
-              <input
-                type="text"
-                className="form-control bg-light border-0"
-                placeholder="Từ khóa..."
-              />
-              <button className="btn btn-primary-cookpad">
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
-            </div>
+
+            <input
+              type="text"
+              className="form-control bg-light"
+              placeholder="Nhập từ khóa..."
+              value={search}
+              onChange={(e) => {
+                const value = e.target.value;
+                setSearch(value);
+                setPage(1);
+
+                if (typingTimeout) clearTimeout(typingTimeout);
+
+                setTypingTimeout(
+                  setTimeout(() => {
+                    fetchBlogs(1);
+                  }, 500)
+                );
+              }}
+            />
           </div>
 
-          {/* CATEGORY */}
-          <div className="blog-widget p-4 bg-white rounded-3 shadow-sm border">
+          {/* CATEGORY (TẠM TĨNH) */}
+          <div className="p-4 bg-white rounded-3 shadow-sm border">
             <h6 className="fw-bold mb-3">Chuyên mục</h6>
             <ul className="list-unstyled mb-0">
               <li className="mb-2">🍜 Review Quán Ăn</li>

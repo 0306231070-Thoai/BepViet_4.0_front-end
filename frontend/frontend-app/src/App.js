@@ -6,6 +6,9 @@ import ForgotPassword from './pages/Auth/forgotPassword';
 import Profile from './pages/User/Profile';
 import BlogFeed from "./pages/Blog/BlogFeed";
 import BlogDetail from "./pages/Blog/BlogDetail";
+import WriteBlog from "./pages/Blog/WriteBlog";
+import Following from "./pages/Following/Following";
+
 
 // Nếu sau này có thêm trang khác thì import tiếp vào đây
 // import RecipeDetail from './pages/Recipe/RecipeDetail';
@@ -23,8 +26,11 @@ function App() {
         {/* Ví dụ sau này thêm trang chi tiết món ăn */}
         {/* <Route path="recipes/:id" element={<RecipeDetail />} /> */}
 
-        <Route path="blog-feed" element={<BlogFeed />} />
-        <Route path="/blog/:id" element={<BlogDetail />} />
+        <Route path="/blog-feed" element={<BlogFeed />} />
+        <Route path="/blogs/:id" element={<BlogDetail />} />
+        <Route path="/blogs/write-blog" element={<WriteBlog />} />
+        <Route path="/following" element={<Following />} />
+
 
       </Route>
 
