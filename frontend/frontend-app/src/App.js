@@ -4,34 +4,30 @@ import HomePage from './pages/Home/HomePage';
 import Login from './pages/Auth/login';
 import ForgotPassword from './pages/Auth/forgotPassword';
 import Profile from './pages/User/Profile';
+import CookbookList from './pages/User/Cookbook';
+import CookbookDetail from './pages/User/CookbookDetail'; // Import trang chi tiết mới
 
-/**
- * Cấu trúc Route của dự án Bếp Việt 4.0
- * Sử dụng React Router v6 để quản lý các phân vùng chức năng
- */
 function App() {
   return (
     <Routes>
-      {/* Nhóm Route sử dụng Layout chung (Sidebar, Navbar, Footer)
-        Phù hợp cho các tính năng: Khám phá, Trang cá nhân, Bảng tin [cite: 33, 37, 43]
-      */}
+      {/* Nhóm Route sử dụng Layout chung */}
       <Route path="/" element={<MainLayout />}>
-
-        {/* Route Con: Trang chủ (Hiện ở vị trí Outlet của MainLayout) */}
         <Route path="/homepage" element={<HomePage />} />
-
-        {/* Trang cá nhân - Thiết lập tài khoản và quản lý Cookbook [cite: 43] */}
-
-        {/* Dự kiến các Route tiếp theo theo đồ án:
-          - <Route path="discovery" element={<DiscoveryPage />} /> [cite: 33]
-          - <Route path="create-recipe" element={<CreateRecipe />} /> [cite: 25]
-        */}
       </Route>
 
-      {/* Sau này làm trang Admin hoặc Login thì thêm Route ở ngoài này */}
+      {/* Auth Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
+
+      {/* User Routes */}
       <Route path="/profile" element={<Profile />} />
+
+      {/* Quản lý Cookbook */}
+      <Route path="/cookbooks" element={<CookbookList />} />
+
+      {/* Route chi tiết: ":id" là tham số động để lấy ID từ URL */}
+      <Route path="/cookbooks/:id" element={<CookbookDetail />} />
+
     </Routes>
   );
 }
