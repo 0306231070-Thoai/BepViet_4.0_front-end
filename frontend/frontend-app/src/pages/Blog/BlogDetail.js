@@ -166,7 +166,7 @@ const BlogDetail = () => {
             onChange={(e) => setNewComment(e.target.value)}
           />
           <button className="btn btn-success btn-sm" onClick={submitComment}>
-            Gửi
+            Gửi bình luận
           </button>
         </div>
       )}
