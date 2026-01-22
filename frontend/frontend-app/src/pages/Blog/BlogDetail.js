@@ -13,14 +13,14 @@ const BlogDetail = () => {
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user"));
 
-  /* ================= HELPER ================= */
+
   const avatarUrl = (img) => {
     if (!img) return "https://i.pravatar.cc/100";
     if (img.startsWith("http")) return img;
     return `http://localhost:8000/storage/${img}`;
   };
 
-  /* ================= FETCH BLOG ================= */
+
   const fetchBlog = useCallback(async () => {
     try {
       setLoading(true);
@@ -43,7 +43,7 @@ const BlogDetail = () => {
     fetchBlog();
   }, [fetchBlog]);
 
-  /* ================= FOLLOW ================= */
+
   const handleFollow = async () => {
     if (!token || !blog?.user) {
       alert("Bạn cần đăng nhập");
@@ -69,7 +69,7 @@ const BlogDetail = () => {
     }
   };
 
-  /* ================= COMMENT ================= */
+  // Gửi bình luận
   const submitComment = async () => {
     if (!newComment.trim()) return;
 
@@ -101,7 +101,6 @@ const BlogDetail = () => {
     }
   };
 
-  /* ================= UI ================= */
   if (loading) {
     return (
       <div className="text-center py-5">

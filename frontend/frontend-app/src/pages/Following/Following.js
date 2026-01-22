@@ -4,7 +4,7 @@ const Following = () => {
   const [users, setUsers] = useState([]);
   const token = localStorage.getItem("token");
 
-  /* ================= FETCH FOLLOWING ================= */
+
   useEffect(() => {
     fetch("http://localhost:8000/api/following", {
       headers: {
@@ -23,7 +23,7 @@ const Following = () => {
       .catch(() => setUsers([]));
   }, [token]);
 
-  /* ================= UNFOLLOW ================= */
+  //Hủy theo dõi
   const handleUnfollow = async (userId) => {
     if (!window.confirm("Huỷ theo dõi người này?")) return;
 
@@ -50,7 +50,7 @@ const Following = () => {
     }
   };
 
-  /* ================= UI ================= */
+  
   return (
     <div className="container mt-4">
       <h4>Đang theo dõi</h4>

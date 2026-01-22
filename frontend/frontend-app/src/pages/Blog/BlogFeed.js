@@ -8,7 +8,6 @@ const BlogFeed = () => {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
 
-  /* ================= FETCH BLOGS ================= */
   const fetchBlogs = useCallback(async () => {
     setLoading(true);
     try {
@@ -32,13 +31,13 @@ const BlogFeed = () => {
     fetchBlogs();
   }, [fetchBlogs]);
 
-  /* ================= IMAGE ================= */
+  // Hàm lấy URL ảnh, nếu không có ảnh thì trả về ảnh mặc định
   const imageUrl = (url) => {
     if (!url) return "https://via.placeholder.com/500x350?text=No+Image";
     return url;
   };
 
-  /* ================= UI ================= */
+
   return (
     <div className="container mt-4">
       <div className="row g-5">
