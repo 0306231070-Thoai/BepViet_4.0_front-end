@@ -11,11 +11,13 @@ const CookbookDetail = () => {
     const [cookbook, setCookbook] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Hàm lấy chi tiết bộ sưu tập
+    // URL cơ sở của Backend - Đảm bảo không có dấu gạch chéo ở cuối
+    const BASE_URL = "http://127.0.0.1:8000";
+
     const fetchCookbookDetail = useCallback(async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://127.0.0.1:8000/api/cookbooks/${id}`, {
+            const response = await fetch(`${BASE_URL}/api/cookbooks/${id}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -28,9 +30,7 @@ const CookbookDetail = () => {
             if (response.ok && result.status === 'success') {
                 setCookbook(result.data);
             } else {
-                // Thay vì Alert, chúng ta set cookbook về null để hiển thị giao diện "Không tìm thấy"
                 setCookbook(null);
-                console.warn("Không tìm thấy bộ sưu tập hoặc có lỗi từ server.");
             }
         } catch (err) {
             console.error("Lỗi kết nối API:", err);
@@ -44,12 +44,11 @@ const CookbookDetail = () => {
         if (id) fetchCookbookDetail();
     }, [id, fetchCookbookDetail]);
 
-    // Hàm gỡ món ăn
     const handleRemoveRecipe = async (recipeId) => {
         if (!window.confirm("Bạn có chắc chắn muốn gỡ món này khỏi bộ sưu tập?")) return;
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://127.0.0.1:8000/api/cookbooks/${id}/recipes/${recipeId}`, {
+            const response = await fetch(`${BASE_URL}/api/cookbooks/${id}/recipes/${recipeId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -62,7 +61,6 @@ const CookbookDetail = () => {
         }
     };
 
-    // 1. Giao diện đang tải
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
@@ -81,7 +79,6 @@ const CookbookDetail = () => {
                 <Navbar />
 
                 <div className="container-fluid py-4 px-4 flex-grow-1">
-                    {/* Nút quay lại luôn hiển thị */}
                     <nav aria-label="breadcrumb" className="mb-4">
                         <button className="btn btn-link text-success p-0 fw-bold text-decoration-none" onClick={() => navigate('/cookbooks')}>
                             <i className="bi bi-chevron-left"></i> Quay lại danh sách bộ sưu tập
@@ -89,7 +86,6 @@ const CookbookDetail = () => {
                     </nav>
 
                     {!cookbook ? (
-                        /* 2. Giao diện khi ID không tồn tại hoặc lỗi (Thay cho Alert) */
                         <div className="card border-0 shadow-sm p-5 text-center">
                             <i className="bi bi-exclamation-circle display-1 text-warning mb-3"></i>
                             <h3 className="fw-bold">Bộ sưu tập không khả dụng</h3>
@@ -97,14 +93,14 @@ const CookbookDetail = () => {
                             <Link to="/cookbooks" className="btn btn-success rounded-pill px-4">Xem các bộ sưu tập khác</Link>
                         </div>
                     ) : (
-                        /* 3. Giao diện chính khi có dữ liệu */
                         <>
-                            {/* Header thông tin bộ sưu tập */}
+                            {/* Header bộ sưu tập */}
                             <div className="card border-0 shadow-sm mb-5 overflow-hidden">
                                 <div className="row g-0 align-items-center">
                                     <div className="col-md-3">
                                         <img
-                                            src={`/img/${cookbook.image || 'macdinh.png'}`}
+                                            // Ảnh Cookbook lấy từ folder public của frontend hoặc folder img
+                                            src={cookbook.image ? `/img/${cookbook.image}` : '/img/macdinh.png'}
                                             alt={cookbook.name}
                                             className="img-fluid h-100 w-100"
                                             style={{ objectFit: 'cover', minHeight: '200px' }}
@@ -116,9 +112,7 @@ const CookbookDetail = () => {
                                             <div className="d-flex justify-content-between align-items-start">
                                                 <div>
                                                     <h2 className="fw-bold text-dark mb-1">{cookbook.name}</h2>
-                                                    <p className="text-muted mb-3">
-                                                        {cookbook.description || "Bộ sưu tập này chưa có mô tả."}
-                                                    </p>
+                                                    <p className="text-muted mb-3">{cookbook.description || "Chưa có mô tả."}</p>
                                                 </div>
                                                 <span className="badge bg-success rounded-pill px-3 py-2">
                                                     {cookbook.recipes?.length || 0} món ăn
@@ -136,7 +130,6 @@ const CookbookDetail = () => {
 
                             {/* Danh sách món ăn */}
                             <h4 className="fw-bold mb-4">Món ăn trong bộ sưu tập</h4>
-
                             <div className="row g-4">
                                 {cookbook.recipes && cookbook.recipes.length > 0 ? (
                                     cookbook.recipes.map(recipe => (
@@ -144,12 +137,20 @@ const CookbookDetail = () => {
                                             <div className="card h-100 border-0 shadow-sm recipe-card-hover">
                                                 <div className="position-relative" style={{ height: '180px' }}>
                                                     <img
-                                                        src={`http://127.0.0.1:8000/storage/${recipe.main_image}`}
+                                                        src={
+                                                            recipe.main_image
+                                                                ? `${BASE_URL}/storage/${recipe.main_image}`
+                                                                : '/img/macdinh.png'
+                                                        }
                                                         className="card-img-top h-100 w-100"
-                                                        style={{ objectFit: 'cover' }}
                                                         alt={recipe.title}
-                                                        onError={(e) => { e.target.src = '/img/macdinh.png'; }}
+                                                        style={{ objectFit: 'cover' }}
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = '/img/macdinh.png';
+                                                        }}
                                                     />
+
                                                     <button
                                                         className="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 rounded-circle shadow"
                                                         onClick={() => handleRemoveRecipe(recipe.id)}
@@ -172,14 +173,11 @@ const CookbookDetail = () => {
                                         </div>
                                     ))
                                 ) : (
-                                    /* 4. HIỂN THỊ KHI TRỐNG: Luôn chạy và hiển thị nội dung này */
                                     <div className="col-12">
                                         <div className="text-center py-5 bg-white rounded shadow-sm border-dashed">
                                             <i className="bi bi-plus-circle display-4 text-light"></i>
-                                            <h5 className="text-muted mt-3">Chưa có món ăn nào ở đây.</h5>
-                                            <Link to="/homepage" className="btn btn-success px-4 mt-2 rounded-pill">
-                                                Khám phá và thêm món ngay
-                                            </Link>
+                                            <h5 className="text-muted mt-3">Chưa có món ăn nào trong bộ sưu tập này.</h5>
+                                            <Link to="/homepage" className="btn btn-success px-4 mt-2 rounded-pill">Khám phá món ăn</Link>
                                         </div>
                                     </div>
                                 )}
