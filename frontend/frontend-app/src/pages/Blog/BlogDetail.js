@@ -13,7 +13,7 @@ const BlogDetail = () => {
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user"));
 
-
+// Hàm lấy URL avatar, nếu không có thì trả về avatar mặc định
   const avatarUrl = (img) => {
     if (!img) return "https://i.pravatar.cc/100";
     if (img.startsWith("http")) return img;

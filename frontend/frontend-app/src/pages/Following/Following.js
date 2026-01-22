@@ -26,7 +26,7 @@ const Following = () => {
   //Hủy theo dõi
   const handleUnfollow = async (userId) => {
     if (!window.confirm("Huỷ theo dõi người này?")) return;
-
+  // Gửi yêu cầu huỷ theo dõi
     try {
       const res = await fetch(
         `http://localhost:8000/api/follow/${userId}`,
@@ -50,7 +50,7 @@ const Following = () => {
     }
   };
 
-  
+
   return (
     <div className="container mt-4">
       <h4>Đang theo dõi</h4>
