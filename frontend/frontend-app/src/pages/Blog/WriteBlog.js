@@ -1,107 +1,116 @@
-import { useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const WriteBlog = () => {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [form, setForm] = useState({
+    title: "",
+    excerpt: "",
+    content: "",
+    status: "published",
+    category_id: "",
+  });
+
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Bạn cần đăng nhập để viết blog");
-      return;
-    }
+  const submit = async () => {
+    if (!token) return alert("Bạn cần đăng nhập");
 
-    if (!title.trim() || !content.trim()) {
-      alert("Vui lòng nhập đầy đủ tiêu đề và nội dung");
-      return;
-    }
+    setLoading(true);
+    const fd = new FormData();
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("content", content);
-    if (image) formData.append("image", image);
+    Object.keys(form).forEach((key) => {
+      if (form[key]) fd.append(key, form[key]);
+    });
+
+    if (image) fd.append("image", image);
 
     try {
-      setLoading(true);
+      const res = await fetch("http://localhost:8000/api/blogs", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+        body: fd,
+      });
 
-      await axios.post(
-        "http://127.0.0.1:8000/api/blogs",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const data = await res.json();
 
-      alert("🎉 Đăng blog thành công");
-      navigate("/blog-feed"); // quay về feed
+      if (!res.ok) {
+        console.error(data);
+        alert(data.message || "Lỗi tạo bài viết");
+        return;
+      }
+
+      navigate(`/blogs/${data.id}`);
     } catch (err) {
       console.error(err);
-      alert("❌ Lỗi khi đăng blog");
+      alert("Lỗi mạng");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container py-5" style={{ maxWidth: 800 }}>
-      <h2 className="fw-bold mb-4">✍️ Viết bài blog</h2>
+    <div className="container mt-4">
+      <h4 className="fw-bold mb-3">Viết bài mới</h4>
 
-      <form onSubmit={handleSubmit}>
-        {/* TITLE */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">Tiêu đề</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Nhập tiêu đề bài viết..."
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
+      <input
+        className="form-control mb-2"
+        placeholder="Tiêu đề"
+        name="title"
+        value={form.title}
+        onChange={handleChange}
+      />
 
-        {/* CONTENT */}
-        <div className="mb-3">
-          <label className="form-label fw-bold">Nội dung</label>
-          <textarea
-            className="form-control"
-            rows="10"
-            placeholder="Nhập nội dung bài viết..."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </div>
+      <textarea
+        className="form-control mb-2"
+        placeholder="Mô tả ngắn"
+        name="excerpt"
+        value={form.excerpt}
+        onChange={handleChange}
+      />
 
-        {/* IMAGE */}
-        <div className="mb-4">
-          <label className="form-label fw-bold">Ảnh bìa</label>
-          <input
-            type="file"
-            className="form-control"
-            accept="image/*"
-            onChange={(e) => setImage(e.target.files[0])}
-          />
-        </div>
+      <textarea
+        className="form-control mb-2"
+        rows={8}
+        placeholder="Nội dung"
+        name="content"
+        value={form.content}
+        onChange={handleChange}
+      />
 
-        {/* BUTTON */}
-        <button
-          type="submit"
-          className="btn btn-success px-4"
-          disabled={loading}
-        >
-          {loading ? "Đang đăng..." : "Đăng bài"}
-        </button>
-      </form>
+      <select
+        className="form-select mb-2"
+        name="status"
+        value={form.status}
+        onChange={handleChange}
+      >
+        <option value="published">Công khai</option>
+        <option value="draft">Bản nháp</option>
+      </select>
+
+      <input
+        type="file"
+        className="form-control mb-3"
+        onChange={(e) => setImage(e.target.files[0])}
+      />
+
+      <button
+        className="btn btn-success"
+        disabled={loading}
+        onClick={submit}
+      >
+        {loading ? "Đang lưu..." : "Đăng bài"}
+      </button>
     </div>
   );
 };
