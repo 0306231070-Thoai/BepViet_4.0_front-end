@@ -12,7 +12,6 @@ const HomePage = () => {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        // 1. Gọi đến API
         const response = await fetch('http://localhost:8000/api/home');
 
         // 2. Kiểm tra nếu có lỗi mạng hoặc lỗi 404/500
@@ -183,4 +182,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-

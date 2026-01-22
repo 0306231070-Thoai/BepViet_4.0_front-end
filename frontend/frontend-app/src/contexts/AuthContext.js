@@ -31,5 +31,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// 3. Hook để các component con gọi dùng cho lẹ
 export const useAuth = () => useContext(AuthContext);
