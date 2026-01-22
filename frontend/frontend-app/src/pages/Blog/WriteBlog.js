@@ -19,7 +19,7 @@ const WriteBlog = () => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
+// Gửi bài viết
   const submit = async () => {
     if (!token) return alert("Bạn cần đăng nhập");
 
@@ -31,7 +31,7 @@ const WriteBlog = () => {
     });
 
     if (image) fd.append("image", image);
-
+// Gửi yêu cầu tạo bài viết
     try {
       const res = await fetch("http://localhost:8000/api/blogs", {
         method: "POST",
