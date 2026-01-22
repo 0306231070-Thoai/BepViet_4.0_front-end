@@ -30,6 +30,7 @@ function App() {
         <Route path="/blogs/:id" element={<BlogDetail />} />
         <Route path="/blogs/write-blog" element={<WriteBlog />} />
         <Route path="/following" element={<Following />} />
+        <Route path="/following/:id" element={<Following />} />
 
 
       </Route>
